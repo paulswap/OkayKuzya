@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cosmic" data-density="cozy">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a1029">
+<title>Okay Kuzya — Your Cosmic AI Assistant</title>
+<meta name="description" content="Okay Kuzya is a friendly cosmic assistant: live weather, time, games, to-do lists, alarms, timers, cartoons, jokes, riddles, secret photos and web answers.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Okay Kuzya — Your Cosmic AI Assistant">
+<meta property="og:description" content="Ask Kuzya anything: weather, time, games, to-do lists, alarms, cartoons, secrets and more.">
+<meta property="og:image" content="Kuzya's%20Photos/1.png">
+<link rel="icon" href="Kuzya's%20Photos/1.png">
+<link rel="apple-touch-icon" href="Kuzya's%20Photos/1.png">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">Okay Kuzya needs JavaScript to chat with you. Please enable it. 👋</div></noscript>
+
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="nebula nebula-a" aria-hidden="true"></div>
+<div class="nebula nebula-b" aria-hidden="true"></div>
+
+<div class="app">
+  <aside class="sidebar" aria-label="Main navigation">
+    <button class="brand" data-goto="home">
+      <img src="Kuzya's%20Photos/1.png" alt="Kuzya">
+      <span class="brand-text">
+        <b>Okay Kuzya</b>
+        <small data-i18n="brand.tag">cosmic assistant</small>
+      </span>
+    </button>
+    <nav class="nav nav-side" id="navSide"></nav>
+    <div class="sidebar-foot">
+      <button class="ghost-btn wide" id="btnHelp"><span>💡</span><span data-i18n="nav.help">What can Kuzya do?</span></button>
+      <small class="muted tiny" data-i18n="brand.footer">Made with love, stars and purple vibes.</small>
+    </div>
+  </aside>
+
+  <div class="content">
+    <header class="topbar">
+      <div class="topbar-brand">
+        <img class="topbar-avatar" src="Kuzya's%20Photos/1.png" alt="">
+        <h1 class="view-title" id="viewTitle">Home</h1>
+      </div>
+      <div class="top-actions">
+        <div class="pill clock-pill" id="statusClock" title="Local time">--:--</div>
+        <button class="icon-btn" id="btnLang" title="Interface &amp; Kuzya language">EN</button>
+        <button class="icon-btn" id="btnSound" title="Sound">🔊</button>
+        <button class="icon-btn" id="btnTheme" title="Switch theme">🌙</button>
+      </div>
+    </header>
+
+    <main class="views" id="views">
+      <section class="view is-active" id="view-home" data-view="home">
+        <div class="hero">
+          <div class="hero-photo">
+            <img src="Kuzya's%20Photos/3.png" alt="Kuzya, your cosmic assistant">
+            <span class="hero-glow" aria-hidden="true"></span>
+          </div>
+          <div class="hero-main">
+            <span class="eyebrow" data-i18n="home.eyebrow">Assistant · search · games · tools</span>
+            <h2 class="hero-title"><span class="grad" data-i18n="home.title">Okay Kuzya</span></h2>
+            <p class="tagline" id="heroGreeting" data-i18n="home.tagline">Hi! I'm Kuzya — your cosmic assistant. Search the web, check the weather, play games and keep your life organised.</p>
+
+            <form class="searchbar" id="homeForm" autocomplete="off">
+              <span class="sb-ico" aria-hidden="true">🔍</span>
+              <input id="homeInput" type="text" enterkeyhint="search" placeholder="Ask me anything…" data-i18n-ph="home.placeholder" aria-label="Ask Kuzya">
+              <button class="btn primary sb-btn" type="submit" data-i18n="home.ask">Ask</button>
+            </form>
+            <div class="suggest" id="homeSuggest" hidden></div>
+
+            <div class="chips" id="homeChips"></div>
+          </div>
+        </div>
+
+        <div class="stat-row" id="statRow"></div>
+
+        <div class="grid cards" id="featureCards"></div>
+
+        <div class="banner" id="siteAd">
+          <img src="Kuzya's%20Photos/4.png" alt="Kuzya hugs you">
+          <div class="banner-body">
+            <h3 data-i18n="ad.title">Okay Kuzya is your phone app, search engine and buddy in one tab</h3>
+            <p data-i18n="ad.text">Bookmark me, add me to your home screen and I will answer in a second — weather, timers, lists, cartoons, jokes and real web results, without any apps to install.</p>
+            <div class="banner-actions">
+              <button class="btn primary" data-ask="What can you do?" data-i18n="ad.cta">Show me what you can do</button>
+              <button class="btn" data-goto="settings" data-i18n="ad.cta2">Make it mine</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-chat" data-view="chat">
+        <div class="chat">
+          <div class="chat-head">
+            <img class="chat-avatar" id="chatAvatar" src="Kuzya's%20Photos/1.png" alt="Kuzya">
+            <div class="chat-head-text">
+              <b>Okay Kuzya</b>
+              <small id="chatStatus" data-i18n="chat.status">online · in the cosmic kitchen</small>
+            </div>
+            <div class="chat-head-actions">
+              <button class="ghost-btn" id="chatNew" data-i18n="chat.new">New chat</button>
+            </div>
+          </div>
+
+          <div class="chat-scroll" id="chatScroll">
+            <div class="chat-intro" id="chatIntro">
+              <img src="Kuzya's%20Photos/3.png" alt="Kuzya">
+              <h3 data-i18n="chat.hello">What are we doing today?</h3>
+              <p class="muted" data-i18n="chat.introHint">Ask a question, set a timer, start a game — I understand English and Russian.</p>
+            </div>
+            <div class="messages" id="messages"></div>
+          </div>
+
+          <div class="composer">
+            <div class="suggest up" id="chatSuggest" hidden></div>
+            <div class="chips slim" id="chatChips"></div>
+            <form class="composer-form" id="chatForm" autocomplete="off">
+              <input id="chatInput" type="text" enterkeyhint="send" placeholder="Message Okay Kuzya…" data-i18n-ph="chat.placeholder" aria-label="Message Kuzya">
+              <button class="btn primary send-btn" type="submit" aria-label="Send">➤</button>
+            </form>
+          </div>
+        </div>
+      </section>
+      <section class="view" id="view-tools" data-view="tools">
+        <div class="grid tools-grid">
+          <div class="panel" id="todoPanel">
+            <div class="panel-head">
+              <h3><span>✅</span> <span data-i18n="todo.title">To-do list</span></h3>
+              <button class="ghost-btn" id="todoClear" data-i18n="todo.clear">Clear done</button>
+            </div>
+            <form class="row-form" id="todoForm" autocomplete="off">
+              <input id="todoInput" type="text" placeholder="Add a task…" data-i18n-ph="todo.placeholder">
+              <button class="btn primary" type="submit" data-i18n="todo.add">Add</button>
+            </form>
+            <ul class="todo-list" id="todoList"></ul>
+            <p class="muted tiny" id="todoEmpty" data-i18n="todo.empty">Nothing here yet. In the chat just say “add buy milk to my list”.</p>
+            <p class="muted tiny" id="todoCount"></p>
+          </div>
+
+          <div class="panel" id="timerPanel">
+            <div class="panel-head"><h3><span>⏱️</span> <span data-i18n="timer.title">Timer</span></h3></div>
+            <div class="timer-display" id="timerDisplay">00:00</div>
+            <div class="bar"><span id="timerBar"></span></div>
+            <div class="chips slim" id="timerPresets"></div>
+            <div class="row-form">
+              <label class="num-field"><input id="timerMin" type="number" min="0" max="999" value="5" inputmode="numeric"><small data-i18n="timer.min">min</small></label>
+              <label class="num-field"><input id="timerSec" type="number" min="0" max="59" value="0" inputmode="numeric"><small data-i18n="timer.sec">sec</small></label>
+            </div>
+            <div class="row-actions">
+              <button class="btn primary" id="timerStart" data-i18n="timer.start">Start</button>
+              <button class="btn" id="timerPause" data-i18n="timer.pause" disabled>Pause</button>
+              <button class="btn" id="timerReset" data-i18n="timer.reset">Reset</button>
+            </div>
+            <p class="muted tiny" data-i18n="timer.hint">Tip: in the chat say “set a timer for 10 minutes”.</p>
+          </div>
+
+          <div class="panel" id="alarmPanel">
+            <div class="panel-head">
+              <h3><span>⏰</span> <span data-i18n="alarm.title">Alarm</span></h3>
+              <button class="ghost-btn" id="alarmTest" data-i18n="alarm.test">Test sound</button>
+            </div>
+            <div class="row-form">
+              <input id="alarmTime" type="time" value="07:30">
+              <input id="alarmLabel" type="text" placeholder="Label (optional)" data-i18n-ph="alarm.labelPlaceholder">
+              <button class="btn primary" id="alarmAdd" data-i18n="alarm.set">Set alarm</button>
+            </div>
+            <ul class="alarm-list" id="alarmList"></ul>
+            <p class="muted tiny" data-i18n="alarm.hint">Keep this tab open (or installed) — Kuzya will ring and show a notification.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-games" data-view="games">
+        <div class="panel">
+          <div class="panel-head">
+            <h3><span>🎮</span> <span data-i18n="games.title">Game room</span></h3>
+            <button class="ghost-btn" id="gamesResetScore" data-i18n="games.resetScore">Reset score</button>
+          </div>
+          <p class="muted" data-i18n="games.hint">Pick a game — Kuzya plays with you right in the chat, with jokes and trash talk included.</p>
+          <div class="grid cards" id="gameCards"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3><span>🏆</span> <span data-i18n="games.scoreboard">Scoreboard</span></h3></div>
+          <div class="score-grid" id="scoreGrid"></div>
+        </div>
+      </section>
+      <section class="view" id="view-gallery" data-view="gallery">
+        <div class="panel">
+          <div class="tabs" id="galleryTabs">
+            <button class="tab is-active" data-tab="public" data-i18n="gallery.tabPublic">Kuzya's photos</button>
+            <button class="tab" data-tab="secret" id="secretTab" data-i18n="gallery.tabSecret">Secret photos</button>
+          </div>
+          <p class="muted" id="galleryNote" data-i18n="gallery.notePublic">Four official portraits. Click any photo to make it bigger.</p>
+          <div class="grid gallery" id="galleryGrid"></div>
+          <div class="row-actions wrap">
+            <button class="btn primary" id="galleryRandom" data-i18n="gallery.random">Surprise me with a photo</button>
+            <button class="btn" id="gallerySecretHint" data-i18n="gallery.secretHint">How do I unlock secrets?</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-settings" data-view="settings">
+        <div class="grid settings-grid">
+          <div class="panel">
+            <div class="panel-head"><h3><span>🎨</span> <span data-i18n="set.appearance">Appearance</span></h3></div>
+            <div class="field">
+              <label data-i18n="set.theme">Theme</label>
+              <div class="swatches" id="themeSwatches"></div>
+              <p class="muted tiny" id="themeDesc"></p>
+            </div>
+            <div class="field row between">
+              <label for="setStars" data-i18n="set.stars">Animated starfield</label>
+              <label class="switch"><input type="checkbox" id="setStars" checked><span></span></label>
+            </div>
+            <div class="field row between">
+              <label for="setTypewriter" data-i18n="set.typewriter">Kuzya types answers letter by letter</label>
+              <label class="switch"><input type="checkbox" id="setTypewriter"><span></span></label>
+            </div>
+            <div class="field row between">
+              <label for="setDensity" data-i18n="set.compact">Compact layout (more on screen)</label>
+              <label class="switch"><input type="checkbox" id="setDensity"><span></span></label>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h3><span>🌍</span> <span data-i18n="set.language">Language</span></h3></div>
+            <p class="muted tiny" data-i18n="set.languageHint">The whole interface switches language and Kuzya answers in the same language. He understands both English and Russian.</p>
+            <div class="segmented" id="langSeg">
+              <button class="seg" data-lang="en">English</button>
+              <button class="seg" data-lang="ru">Русский</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h3><span>🐾</span> <span data-i18n="set.kuzya">Kuzya himself</span></h3></div>
+            <div class="field">
+              <label for="setName" data-i18n="set.yourName">Your name (Kuzya will remember it)</label>
+              <div class="row-form">
+                <input id="setName" type="text" placeholder="e.g. Alex" data-i18n-ph="set.namePlaceholder">
+                <button class="btn primary" id="setNameSave" data-i18n="set.save">Save</button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="setJokes" data-i18n="set.playful">Playfulness level</label>
+              <input type="range" id="setJokes" min="0" max="3" step="1" value="2">
+              <div class="range-labels"><span data-i18n="set.playful0">Serious</span><span data-i18n="set.playful1">Calm</span><span data-i18n="set.playful2">Fun</span><span data-i18n="set.playful3">Silly</span></div>
+            </div>
+            <div class="field row between">
+              <label for="setSecrets" data-i18n="set.secrets">Allow rare secret photos</label>
+              <label class="switch"><input type="checkbox" id="setSecrets" checked><span></span></label>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3><span>🔊</span> <span data-i18n="set.sound">Sound</span></h3></div>
+            <div class="field row between">
+              <label for="setSound" data-i18n="set.soundOn">Message sounds</label>
+              <label class="switch"><input type="checkbox" id="setSound" checked><span></span></label>
+            </div>
+            <div class="field">
+              <label for="setVolume" data-i18n="set.volume">Volume</label>
+              <input type="range" id="setVolume" min="0" max="100" step="5" value="60">
+            </div>
+            <div class="field row between">
+              <label for="setNotif" data-i18n="set.notif">Timer &amp; alarm notifications</label>
+              <label class="switch"><input type="checkbox" id="setNotif" checked><span></span></label>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h3><span>🗄️</span> <span data-i18n="set.data">Data</span></h3></div>
+            <p class="muted tiny" data-i18n="set.dataHint">Everything is stored locally in your browser — no server, no account, no tracking.</p>
+            <div class="row-actions wrap">
+              <button class="btn" id="dataExport" data-i18n="set.export">Download chat</button>
+              <button class="btn" id="dataClearChat" data-i18n="set.clearChat">Clear chat</button>
+              <button class="btn danger" id="dataReset" data-i18n="set.resetAll">Reset everything</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h3><span>⭐</span> <span data-i18n="set.about">About</span></h3></div>
+            <p class="muted tiny" data-i18n="set.aboutText">Okay Kuzya is a static, offline-friendly fan project: HTML, CSS and vanilla JavaScript. Weather comes from Open-Meteo, knowledge from Wikipedia, everything else is crafted by Kuzya himself.</p>
+            <p class="muted tiny" data-i18n="set.aboutShortcuts">Shortcuts: Ctrl/Cmd + K opens the chat, Escape closes overlays, ↑ in an empty input repeats your last message.</p>
+            <p class="muted tiny" id="appVersion">v1.0</p>
+          </div>
+        </div>
+      </section>
+
+
+    </main>
+
+    <nav class="tabbar" id="navTab" aria-label="Mobile navigation"></nav>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+  <img id="lbImg" alt="Kuzya photo">
+  <p class="lb-caption" id="lbCaption"></p>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="assets/js/core.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/responses.js"></script>
+<script src="assets/js/knowledge.js"></script>
+<script src="assets/js/services.js"></script>
+<script src="assets/js/games.js"></script>
+<script src="assets/js/brain.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
